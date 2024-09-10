@@ -3,7 +3,7 @@
 staff = 32
 students = 100
 guests = students*2
-people = students+guests
+people = students+guests+staff
 tables = str(people/12)
 print ("\nyou will need "+tables+" tables.\n")
 
@@ -12,7 +12,7 @@ print ("\nyou will need "+tables+" tables.\n")
 students = students-1
 staff = staff-3
 guests = guests-15
-people = students+guests+1
+people = students+guests+staff+1
 tables = str(people/12)
 
 
