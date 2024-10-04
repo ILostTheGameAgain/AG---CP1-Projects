@@ -23,14 +23,10 @@ def circle(radius, decimal):
 def trapezoid(base1, base2, height):
     return (float(base1)+float(base2))*float(height)/2
 
-#function to calculate area of a triangle, but with three sides and using trigonometry
-#   C
-#a / \ c
-# /   \
-#A-----B
-#   b
-def trig_triangle(side1, side2, side3):
-    angle_A = 
+#function to calculate area of a triangle, but with three sides and using heron's formula, square root of s(s-a)(s-b)(s-c)
+def heron_triangle(side1, side2, side3, decimal):
+    semi_perimiter = (float(side1) + float(side2) + float(side3))/2
+    return round(math.sqrt(semi_perimiter*(semi_perimiter-float(side1))*(semi_perimiter-float(side2))*(semi_perimiter-float(side3))), int(decimal))
 
 #put functions in a loop to use it repeatedly
 while True:
@@ -45,14 +41,15 @@ type
   6 to calculate a triangle (with three sides)
 type your answer here: """)
     if shape == "1":
-        print(square(input("what are the side lengths?")))
+        print(square(input("what are the side lengths? ")))
     elif shape == "2":
         print(rectangle(input("what is the length? "),input("what is the width? ")))
     elif shape == "3":
         print(bh_triangle(input("what is the base (bottom side) width? "),input("what is the height? ")))
     elif shape == "4":
-        print(circle(input("what is the radius? "),input("to how many decimals? ")))
+        print(circle(input("what is the radius? "),input("to how many decimal places? ")))
     elif shape == "5":
         print(trapezoid(input("what is the width of one base (bottom side)? "),input("what is the width of the other base (top side)? "),input("what is the height ")))
     elif shape == "6":
-        print(rectangle(input("what is the length? "),input("what is the width? ")))
+        print(heron_triangle(input("what is the first side length? "),input("what is the second side length? "), input("what is the third side length? "), input("to how many decimal places? ")))
+
