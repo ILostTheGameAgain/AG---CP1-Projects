@@ -4,18 +4,22 @@
 
 import random #needs random for computer to decide input
 
+#variables for computer wins and player wins
+computer_score = 0
+player_score = 0
+
 while True: #will use break statement to end game
 
-    computer_input = random.randint(1,3) #whether something is rock, paper, or scissors doesn't matter other than printing it
+    computer_input = random.randint(0,2) #whether something is rock, paper, or scissors doesn't matter other than printing it
 
     try:
-        user_input = int(input("\ntype\n1 for rock\n2 for paper\n3 for scissors\n4 to quit\nyour input here: "))
+        user_input = int(input("\ntype\n1 for rock\n2 for paper\n3 for scissors\n4 to show score\n5 to quit\nyour input here: "))
     except ValueError: 
         print("\ninvalid input")
         continue
 
     #if statements to show what user played
-    if user_input == 4: #quit while loop if input is 4
+    if user_input == 5: #quit while loop if input is 5
         break
     elif user_input == 1: #play rock if input is 1
         print("\nyou played rock")
@@ -23,18 +27,31 @@ while True: #will use break statement to end game
         print("\nyou played paper")
     elif user_input == 3: #play scissors if input is 3
         print("\nyou played scissors")
+    elif user_input == 4: #show score if input is 4
+        print(f"\nscore:\n player: {player_score}\n computer: {computer_score}")
+        continue
     else:
         print("\ninvalid input")
         continue
+    
+    user_input -= 1
 
     #if statements to show what computer played
-    if computer_input == 1: #play rock if input is 1
+    if computer_input == 0: #play rock if input is 0
         print("\ncomputer played rock")
-    elif computer_input == 2: #play paper if input is 2
+    elif computer_input == 1: #play paper if input is 1
         print("\ncomputer played paper")
-    else: #play scissors if input is anything else, which can only be 3
+    else: #play scissors if input is anything else, which can only be 2
         print("\ncomputer played scissors")
 
-    #if statements to decide who wins, 1 beats 2, 2
-print("this is a print statement")
+    #if statements to decide who wins, tie if numbers are equal
+    if computer_input == user_input:
+        print("\nit's a tie")
+    elif (computer_input-1)%3 == user_input:
+        print("\ncomputer wins")
+        computer_score += 1
+    elif (computer_input+1)%3 == user_input:
+        print("\nplayer wins")
+        player_score += 1
+
 print("\nThanks for playing!")
