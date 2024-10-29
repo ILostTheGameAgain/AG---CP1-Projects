@@ -36,5 +36,5 @@ while True: #will use break statement to end game
         print("\ncomputer played scissors")
 
     #if statements to decide who wins, 1 beats 2, 2
-
+print("this is a print statement")
 print("\nThanks for playing!")
