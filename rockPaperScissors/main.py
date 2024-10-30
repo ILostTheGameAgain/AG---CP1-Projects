@@ -4,9 +4,11 @@
 
 import random #needs random for computer to decide input
 
-#variables for computer wins and player wins
+#variables for computer wins, player wins, ties, and number of plays
 computer_score = 0
 player_score = 0
+ties = 0
+rounds = 0
 
 while True: #will use break statement to end game
 
@@ -28,7 +30,7 @@ while True: #will use break statement to end game
     elif user_input == 3: #play scissors if input is 3
         print("\nyou played scissors")
     elif user_input == 4: #show score if input is 4
-        print(f"\nscore:\n player: {player_score}\n computer: {computer_score}")
+        print(f"\nscore:\n player: {player_score}\n computer: {computer_score}\n ties: {ties}\nwin rate: {round((player_score/rounds)*100, 2)}%")
         continue
     else:
         print("\ninvalid input")
@@ -47,11 +49,14 @@ while True: #will use break statement to end game
     #if statements to decide who wins, tie if numbers are equal
     if computer_input == user_input:
         print("\nit's a tie")
+        ties += 1
     elif (computer_input-1)%3 == user_input:
         print("\ncomputer wins")
         computer_score += 1
     elif (computer_input+1)%3 == user_input:
         print("\nplayer wins")
         player_score += 1
+    
+    rounds += 1
 
 print("\nThanks for playing!")
