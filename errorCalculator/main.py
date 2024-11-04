@@ -2,8 +2,7 @@
 
 #is a calculator that that can do basic operators and can handle errors
 
-#may want more operations, exponents, ..., needs math
-import math
+#may want more operations, exponents, ...,
 
 def addition(num_1, num_2): #function for adding two number
     return num_1 + num_2
@@ -17,14 +16,11 @@ def division(num_1, num_2): #function for dividing one number by the other
 def exponent(num_1, num_2): #function for raising one number to the power of another
     return num_1 ** num_2
 
-def tetration(num_1, num_2): #function for tetration
-    for x in range(num_2):
-        exponent(num_1, num_1)
 
 while True: #make a while loop so user can keep using
     try:
-        number_1 = float(input("what is the first number? "))
-        number_2 = float(input("what is the second number? "))
+        number_1 = int(input("what is the first number? "))
+        number_2 = int(input("what is the second number? "))
     except ValueError:
         print("invalid number")
         continue
@@ -35,9 +31,7 @@ type:
  2 for subtraction
  3 for multiplication
  4 for division
- 5 for exponents (second number fraction for roots)
- 6 for tetration (repeated exponents)
- 7 for pentation (repeated tetration)
+ 5 for exponents
 your answere here: """)
     if operator == "1":
         print(addition(number_1, number_2))
@@ -46,12 +40,12 @@ your answere here: """)
     elif operator == "3":
         print(multiplication(number_1, number_2))
     elif operator == "4":
-        if not[number_2 == 0]:
+        if number_2 != 0:
             print(division(number_1, number_2))
         else:
             print("\ncan't divide by 0")
             continue
     elif operator == "5":
         print(exponent(number_1, number_2))
-    elif operator == "6":
-        
+    else:
+        print("invalid input")
