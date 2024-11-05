@@ -62,12 +62,11 @@ for x in range(0, question_number): #makes the user answer five questions
     if user_answer == correct_answer:
         score += 1
         print(f"\ncorrect\nscore: {score} / {x+1}")
-        difficulty *= 4
+        difficulty = int(difficulty*1.5)
     else:
         print(f"\nincorrect\ncorrect answer: {correct_answer}\n score: {score} / {x+1}")
-        difficulty /= 4
+        difficulty = int(difficulty/1.5)
         #don't go below a certain difficulty
         if difficulty < 4:
             difficulty = 4
             used_answers.clear()
-print("thanks for playing!")
