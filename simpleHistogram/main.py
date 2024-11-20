@@ -12,25 +12,25 @@ while True:
         min_index = 0
         max_index = 0
         list_of_numbers = []
-      
+
         for i in inputted_numbers: #use spaces to put numbers in list
             if i == " ":
                 min_index = max_index
                 max_index = loop_repeats
                 list_of_numbers.append(int(inputted_numbers[min_index:max_index]))
             loop_repeats += 1
-          
+
         if inputted_numbers[-1] != " ": #put last number in list
             min_index = max_index
             max_index = len(inputted_numbers)
             list_of_numbers.append(int(inputted_numbers[min_index:max_index]))
-          
+
         if len(list_of_numbers) >= 6: #check if list is long enough
             break
-            
+
         else:
             print("\nmust have at least 6 numbers")
-            
+
     except ValueError:
         print("\ninvalid input")
 
@@ -47,6 +47,18 @@ while True:
 #print key
 print("""
 KEY:
+y: 1,000,000,000,000,000,000,000,000
+t: 100,000,000,000,000,000,000,000
+r: 10,000,000,000,000,000,000,000
+e: 1,000,000,000,000,000,000,000
+w: 100,000,000,000,000,000,000
+q: 10,000,000,000,000,000,000
+}: 1,000,000,000,000,000,000
+W: 100,000,000,000,000,000
+Q: 10,000,000,000,000,000
+X: 1,000,000,000,000,000
+O: 100,000,000,000,000
+.: 10,000,000,000,000
 ?: 1,000,000,000,000
 E: 100,000,000,000
 >: 10,000,000,000
@@ -67,6 +79,54 @@ loop_repeats = 0
 for i in list_of_numbers:
     next_number = i
     next_number_translated = ""
+
+    while next_number >= 1000000000000000000000000:
+        next_number_translated += "y"
+        next_number -= 1000000000000000000000000
+
+    while next_number >= 100000000000000000000000:
+        next_number_translated += "t"
+        next_number -= 100000000000000000000000
+
+    while next_number >= 10000000000000000000000:
+        next_number_translated += "r"
+        next_number -= 10000000000000000000000
+
+    while next_number >= 1000000000000000000000:
+        next_number_translated += "e"
+        next_number -= 1000000000000000000000
+
+    while next_number >= 100000000000000000000:
+        next_number_translated += "w"
+        next_number -= 100000000000000000000
+
+    while next_number >= 10000000000000000000:
+        next_number_translated += "q"
+        next_number -= 10000000000000000000
+
+    while next_number >= 1000000000000000000:
+        next_number_translated += "}"
+        next_number -= 1000000000000000000
+
+    while next_number >= 100000000000000000:
+        next_number_translated += "W"
+        next_number -= 100000000000000000
+
+    while next_number >= 10000000000000000:
+        next_number_translated += "Q"
+        next_number -= 10000000000000000
+
+    while next_number >= 1000000000000000:
+        next_number_translated += "X"
+        next_number -= 1000000000000000
+
+    while next_number >= 100000000000000:
+        next_number_translated += "O"
+        next_number -= 100000000000000
+
+    while next_number >= 10000000000000:
+        next_number_translated += "."
+        next_number -= 10000000000000
 
     while next_number >= 1000000000000:
         next_number_translated += "?"
@@ -115,10 +175,10 @@ for i in list_of_numbers:
     while next_number >= 10:
         next_number_translated += "^"
         next_number -= 10
-    
+
     while next_number > 0:
         next_number_translated += "*"
         next_number -= 1
     
     loop_repeats += 1
-    print(str(loop_repeats) +": "+ next_number_translated)
+    print(str(loop_repeats) +": "+ next_number_translated+"\n")
