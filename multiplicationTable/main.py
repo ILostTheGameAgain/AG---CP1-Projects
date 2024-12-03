@@ -55,7 +55,7 @@ for x in range(column_min, column_max+1):
         graph += "\n "+str(x)+"|"
     elif len(str(x)) == 5:
         graph += "\n"+str(x)+"|"
-    #multiply the numbers together
+    #multiply the numbers together          NESTED LOOP
     for y in range(row_min, row_max+1):
         if not y == row_max:
             if len(str(x*y)) == 1:
