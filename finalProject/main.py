@@ -15,17 +15,17 @@ speed = 1
 def setup():
     for y in range(7):
         for x in range(7):
-            resource = random.randint(1,12)
+            resource = random.randint(1,20)
             if x == 3:
                 if y == 2:
-                    resource = 13
-            if resource == 5 or resource == 6:
+                    resource = 21
+            if resource >= 11 and resource <= 13:
                 map[y][x] = "oO"
-            elif resource == 7 or resource == 8:
+            elif resource >= 14 and resource <= 18:
                 map[y][x] = "/\\"
-            elif resource == 9:
+            elif resource >= 19 and resource <= 20:
                 map[y][x] = "? "
-            elif resource == 13:
+            elif resource == 21:
                 map[y][x] = "$ "
             else:
                 map[y][x] = "  "
@@ -35,8 +35,8 @@ def setup():
 def shop(gold):
     global inventory
     global speed
-    
     while True:
+        #display the possible inputs
         print(f"""what would you like to buy? type:
 1 to buy speed upgrade: can move faster .................. (7 gold)
 2 to buy efficiency upgrade: can do more things in a day . (7 gold)
@@ -46,41 +46,75 @@ def shop(gold):
 6 to buy strength potion: deal more damage once .......... (4 gold)
 7 to buy health potion: heal some health ................. (2 gold)
 8 to buy random potion ................................... (3 gold)
-9 to sell wood, 2 gold per wood .......................... (+{inventory.count("wood")*2} gold)
-10 to sell stone .........................................
-10 to leave shop
+9 to sell wood, 2 gold per wood .......................... (you have {inventory.count("wood")} wood)
+10 to sell rocks, 3 gold per rock......................... (you have {inventory.count("rock")} rocks)
+11 to leave shop
 (you have {gold} gold)
 """)
+        #get user input
         user_input = input()
-        if user_input == "1":
+        if user_input == "1": #buy movement upgrades
             if gold >= 7:
                 gold -= 7
                 speed += 1
                 print("\nupgraded speed\n")
             else:
                 print("\nnot enough gold\n")
-        elif user_input == "9":
+        elif user_input == "9": #sell wood
+            if inventory.count("wood") > 0:
+                inventory.remove("wood")
+                print("\n gained 2 gold")
+            else:
+                print("\nyou have no wood")
+        elif user_input == "10": #sell rocks
+            if inventory.count("rock") > 0:
+                inventory.remove("rock")
+                print("\n gained 3 gold")
+            else:
+                print("you have no money")
+        elif user_input == "11":
             break
 
 
 #function to interact with environment
 def interact(place):
     global inventory
+    #if there's a thing on the space the payer is on, remove it and add it to their inventory
     if place == "oO":
-        inventory.append("rock")
-        print("got rocks")
+        amount_of_resource = random.randint(1, 3)
+        for i in range(amount_of_resource):
+            inventory.append("rock")
+        print(f"\ngot rocks x {amount_of_resource}")
         inventory.sort()
         return True
+    
     elif place == "/\\":
-        inventory.append("wood")
-        print("got wood")
+        amount_of_resource = random.randint(1, 3)
+        for i in range(amount_of_resource):
+            inventory.append("wood")
+        print(f"\ngot wood x {amount_of_resource}")
         inventory.sort()
         return True
+    
     elif place == "? ":
-        inventory.append("gold")
-        print("got gold")
+        amount_of_resource = random.randint(0, 10)
+        for i in range(amount_of_resource):
+            inventory.append("gold")
+        print(f"\ngot gold x {amount_of_resource}")
+
+        amount_of_resource = random.randint(0, 2)
+        for i in range(amount_of_resource):
+            inventory.append("rock")
+        print(f"got rocks x {amount_of_resource}")
+
+        amount_of_resource = random.randint(0, 2)
+        for i in range(amount_of_resource):
+            inventory.append("wood")
+        print(f"got wood x {amount_of_resource}")
+
         inventory.sort()
-        return true
+        return True
+    
     elif place == "$ ":
         shop(inventory.count("gold"))
 
@@ -190,17 +224,18 @@ E - you
 #run everythng
 setup()
 while True:
+    print("\n----------------------------------------------------------------\n")
     display_map()
     print("""what do you do? type:
 1 to move
 2 to shop/gather resources
 3 to view inventory""")
     user_input = input()
-    if user_input == "1":
+    if user_input == "1": #if user input is 1, player moves
         movement(speed)
-    elif user_input == "2":
+    elif user_input == "2": #if user input is 2, player can gather things
         if interact(map[player_y][player_x]):
             map[player_y][player_x] = "  "
-    elif user_input == "3":
+    elif user_input == "3": #if user input is 3, shows inventory
         display_inventory()
     
