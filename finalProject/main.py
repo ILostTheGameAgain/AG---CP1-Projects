@@ -9,7 +9,11 @@ player_x = 3
 player_y = 3
 inventory = []
 speed = 1
-
+player_health = 100
+player_attack = 2
+level = 1
+actions = 3
+time = "day"
 
 #set board function
 def setup():
@@ -29,6 +33,66 @@ def setup():
                 map[y][x] = "$ "
             else:
                 map[y][x] = "  "
+
+
+#function for combat
+def combat():
+    global player_health
+    global player_attack
+    #decide what attacks you, there aren't really any differences except for the name
+    enemies = ["a bear", "100 squirrels", "a racoon", "a snake", "a deer"]
+    short_name = ["bear", "squirrels", "racoon", "snake", "deer"]
+    enemy = random.randint(0, len(enemies)-1)
+    print(f"You encounter {enemies[enemy]}")
+
+    enemy_health = 10
+    enemy_attack = 2
+    #loop for main combat
+    while True:
+        #user does something
+        while True:
+            counter = 0
+            print(f"""
+What do you do? type:
+1 to attack the {short_name[enemy]}
+2 to try to counter the next attack
+3 to use an item
+your answer here:""")
+            
+            user_input = input()
+            if user_input == "1":
+                enemy_health -= player_attack
+                print(f"\nattacked the {short_name[enemy]}\nit now has {enemy_health} health left")
+                break
+            elif user_input == "2":
+                counter = random.randint(0,1)
+                if counter == 1:
+                    print("\ncounter was successful")
+                    break
+                else:
+                    print("\ncounter was successful")
+                break
+            elif user_input == "3":
+                break
+            else:
+                print("\ninvalid input")
+        
+        #check if enemy is defeated
+        if enemy_health <= 0:
+            return True
+        
+        #enemy attacks
+        if counter == 0:
+            player_health -= random.randint(1, enemy_attack)
+            print(f"\nthe {short_name[enemy]} attacked you\nyou now have {player_health} health left")
+        else:
+            enemy_health -= random.randint(1, enemy_attack)
+            print(f"\nthe {short_name[enemy]} attacked you\nhowever, you countered the attack\nit now has {enemy_health} health left")
+        
+        #check if player is defeated
+        if player_health <= 0:
+            return False
+    
 
 
 #function to buy things
@@ -134,7 +198,7 @@ def movement(max_moves):
         while True:
             if continue_moving:
                 #user types letters, and moves depending on what they put
-                player_moves = input(f"where would you like to move? type 1 letter (you have {max_moves-i} moves left)\nn for north\ne for east\ns for south\nw for west\nto not move, type -\nyour answer here\n").strip().lower()
+                player_moves = input(f"where would you like to move? type 1 letter (you have {max_moves-i} moves left)\nn for north\ne for east\ns for south\nw for west\nto not move, type -\nNOTE THE COMPASS\nyour answer here\n").strip().lower()
                 if len(player_moves) == 1: #user moves 1 place at a time
                     if player_moves == "n":
                         position_change[0] -= 1
@@ -229,13 +293,26 @@ while True:
     print("""what do you do? type:
 1 to move
 2 to shop/gather resources
-3 to view inventory""")
+3 to view inventory, does not count as an action
+4 to rest""")
     user_input = input()
     if user_input == "1": #if user input is 1, player moves
         movement(speed)
+        actions -= 1
     elif user_input == "2": #if user input is 2, player can gather things
         if interact(map[player_y][player_x]):
             map[player_y][player_x] = "  "
+        actions -= 1
     elif user_input == "3": #if user input is 3, shows inventory
         display_inventory()
-    
+    elif user_input == "4": #if user input is 4, gain health
+        health_gain = random.randint(0, 5)
+        player_health += health_gain
+        actions -= 1
+    else:
+        print("\ninvalid input")
+
+    if actions > 0:
+        print(f"\nyou have {actions} actions left")
+    else:
+        
