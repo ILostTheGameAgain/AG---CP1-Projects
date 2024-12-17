@@ -12,7 +12,7 @@ player_x = 3
 player_y = 3
 inventory = []
 speed = 1
-player_health = 100
+player_health = 50
 player_attack = 2
 level = 1
 starting_actions = 3
@@ -52,7 +52,7 @@ def display_inventory():
     for i in inventory:
         if i not in inventory_display:
             inventory_display.append(i)
-    print(f"\ninventory:")
+    print(f"\nINVENTORY:")
     for i in inventory_display:
         print(f"{i} x {inventory.count(i)}")
 
@@ -162,6 +162,7 @@ def shop(gold):
     trap_price = 4
     while True:
         #display the possible inputs
+        print("\033c")
         print(f"""\nwhat would you like to buy? type:
    UPGRADES
 1 to buy speed upgrade: can move faster .................. ({speed_price} gold)
@@ -265,6 +266,7 @@ def shop(gold):
         elif user_input == "9": #sell wood
             if inventory.count("wood") > 0:
                 inventory.remove("wood")
+                gold += 2
                 print("\ngained 2 gold")
             else:
                 print("\nyou have no wood")
@@ -272,12 +274,14 @@ def shop(gold):
         elif user_input == "10": #sell rocks
             if inventory.count("rock") > 0:
                 inventory.remove("rock")
+                gold += 3
                 print("\ngained 3 gold")
             else:
                 print("\nyou have no rocks")
                 
         elif user_input == "11":
             break
+        time.sleep(1)
 
 
 #---------------------------------
@@ -365,11 +369,11 @@ def movement(max_moves):
                 if len(player_moves) == 1: #user moves 1 place at a time_of_day
                     if player_moves == "n":
                         position_change[0] -= 1
-                    elif player_moves == "w":
-                        position_change[1] += 1
                     elif player_moves == "e":
-                        position_change[0] += 1
+                        position_change[1] += 1
                     elif player_moves == "s":
+                        position_change[0] += 1
+                    elif player_moves == "w":
                         position_change[1] -= 1
                     elif player_moves == "-":
                         continue_moving = False
@@ -400,6 +404,7 @@ def movement(max_moves):
 #function to make the map
 #---------------------------------
 def display_map():
+    global player_health
     #Make 7x7 grid of squares
     #will print as
     #     |    |    |    |    |    |        N
@@ -423,8 +428,8 @@ def display_map():
             print(f"{player_position[y][x]}|", end="")
 
         if y == 0:
-            print("   S + W",end="")
-            print("\n+----+----+----+----+----+----+----+     E")
+            print("   W + E",end="")
+            print("\n+----+----+----+----+----+----+----+     S")
 
         elif y == 1:
             print(f"\n+----+----+----+----+----+----+----+ TIME: {time_of_day}")
@@ -438,6 +443,8 @@ $ - Shop       Oo - rocks
 v - trap      ⬜ - you
 you have {actions} actions left
 """)
+    print(f"\nHEALTH: {player_health}")
+    display_inventory()
 
 
 #---------------------------------
@@ -450,17 +457,18 @@ while user_input == "":
 #---------------------------------
 #run everythng
 #---------------------------------
+setup()
 while True:
-    if days_passed % 3 == 0: #reset board every 3 days
+    print("\033c")
+    if days_passed % 3 == 0 and actions == 0 and time == "day": #reset board every 3 days
         setup()
     
-    print("\n----------------------------------------------------------------\n")
     display_map()
     print("""\nwhat do you do? type:
-1 to move
-2 to shop/gather resources
-3 to view inventory, does not count as an action
-4 to rest""")
+1 to move - move somewhere else on the map
+2 to shop/gather resources - get stuff depending on where you are, and have the option to buy and sell stuff at the shop
+3 to rest - do nothing, but heal some health
+4 for additional knowlege (doesn't count as an action)""")
     user_input = input()
     if user_input == "1": #if user input is 1, player moves
         movement(speed)
@@ -485,31 +493,28 @@ while True:
                 for i in range(random.randint(1,5)):
                     inventory.append("gold")
 
-    elif user_input == "3": #if user input is 3, shows inventory
-        print("\nINVENTORY:")
-        display_inventory()
-        
-    elif user_input == "4": #if user input is 4, gain health, can't go over max health
+    elif user_input == "3": #if user input is 4, gain health, can't go over max health
         health_gain = random.randint(0, max_health//10)
-        while player_health + health_gain > max_health:
-            health_gain -= 1
+        if player_health + health_gain > max_health:
+            while player_health + health_gain > max_health:
+                health_gain -= 1
         player_health += health_gain
         print(f"\ngained {health_gain} health\nyou now have {player_health} health")
         actions -= 1
-        #at night, there is a chance to be attacked while doing things
-        if time_of_day == "night" and random.randint(1, 3) == 3:
-            if not combat():
-                break
-            else:
-                for i in range(random.randint(1,5)):
-                    inventory.append("gold")
+    
+    elif user_input == "4": #explain anything confusing
+        print("""EXTRA INFO:
+There isn't really a goal: the game continues infinitely
+You technically win if you survive for 6 days
+
+I'm not sure what else to say
+
+I lost the game""")
         
     else:
         print("\ninvalid input")
-
-    time.sleep(0.5)
     if actions == 0: #change time if user has no more actions
-        print("\n----------------------------------------------------------------\n")
+        print("\033c")
         display_map()
         actions = starting_actions
         print("\nyou have no more actions")
