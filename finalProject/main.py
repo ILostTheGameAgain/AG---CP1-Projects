@@ -7,7 +7,7 @@ import time
 #first variables
 #---------------------------------
 map = [[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "]]
-player_position = [[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "],[" "," "," ","E"," "," "," "],[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "],[" "," "," "," "," "," "," "]]
+player_position = [["  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","⬜","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  "],["  ","  ","  ","  ","  ","  ","  "]]
 player_x = 3
 player_y = 3
 inventory = []
@@ -76,8 +76,8 @@ def combat():
         map[player_y][player_x] = "  "
         print("\nhowever, there was a trap, ending combat")
         return True
-    enemy_health = 10 + round(1.5 * days_passed)
-    enemy_attack = 2 + round(0.2 * days_passed)
+    enemy_health = 10 + round(1.5 ** days_passed)
+    enemy_attack = 2 + round(0.2 ** days_passed)
     attack_multiplier = 1
     #loop for main combat
     while True:
@@ -379,7 +379,7 @@ def movement(max_moves):
                 else:
                     print("invalid input")
                     continue
-            player_position[player_y][player_x] = " " #remove the previous x
+            player_position[player_y][player_x] = "  " #remove the previous x
             #adjust position
             player_y += position_change[0]
             player_x += position_change[1]
@@ -391,7 +391,7 @@ def movement(max_moves):
                 player_y = 6
             if player_y < 0:
                 player_y = 0
-            player_position[player_y][player_x]= "E"
+            player_position[player_y][player_x]= "⬜"
             position_change = [0, 0]
             break
 
@@ -420,7 +420,7 @@ def display_map():
         print(f"|",end="")
         for x in range(7):
             print(f"{map[y][x]}", end="")
-            print(f" {player_position[y][x]}|", end="")
+            print(f"{player_position[y][x]}|", end="")
 
         if y == 0:
             print("   S + W",end="")
@@ -435,12 +435,18 @@ def display_map():
     print(f"""KEY:
 $ - Shop       Oo - rocks
 ? - treasure   /\\ - tree
-v - trap      E - you
+v - trap      ⬜ - you
 you have {actions} actions left
 """)
 
 
-
+#---------------------------------
+#introduction
+#---------------------------------
+print("This game doesn't really have a goal, other than surviving as long as possible. You technically win if you survive for more than five days, but it continues. This game is infinite, so long as you keep surviving.")
+user_input = ""
+while user_input == "":
+    user_input = input("type anything to start: ")
 #---------------------------------
 #run everythng
 #---------------------------------
@@ -460,22 +466,24 @@ while True:
         movement(speed)
         actions -= 1
         #at night, there is a chance to be attacked while doing things
-        if not combat():
-            break
-        else:
-            for i in range(random.randint(1,5)):
-                inventory.append("gold")
-                
+        if time_of_day == "night" and random.randint(1, 3) == 3:
+            if not combat():
+                break
+            else:
+                for i in range(random.randint(1,5)):
+                    inventory.append("gold")
+
     elif user_input == "2": #if user input is 2, player can gather things
         if interact(map[player_y][player_x]):
             map[player_y][player_x] = "  "
         actions -= 1
         #at night, there is a chance to be attacked while doing things
-        if not combat():
-            break
-        else:
-            for i in range(random.randint(1,5)):
-                inventory.append("gold")
+        if time_of_day == "night" and random.randint(1, 3) == 3:
+            if not combat():
+                break
+            else:
+                for i in range(random.randint(1,5)):
+                    inventory.append("gold")
 
     elif user_input == "3": #if user input is 3, shows inventory
         print("\nINVENTORY:")
@@ -489,11 +497,12 @@ while True:
         print(f"\ngained {health_gain} health\nyou now have {player_health} health")
         actions -= 1
         #at night, there is a chance to be attacked while doing things
-        if not combat():
-            break
-        else:
-            for i in range(random.randint(1,5)):
-                inventory.append("gold")
+        if time_of_day == "night" and random.randint(1, 3) == 3:
+            if not combat():
+                break
+            else:
+                for i in range(random.randint(1,5)):
+                    inventory.append("gold")
         
     else:
         print("\ninvalid input")
