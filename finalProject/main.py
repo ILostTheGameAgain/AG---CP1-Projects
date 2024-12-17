@@ -462,7 +462,10 @@ while True:
         #at night, there is a chance to be attacked while doing things
         if not combat():
             break
-
+        else:
+            for i in range(random.randint(1,5)):
+                inventory.append("gold")
+                
     elif user_input == "2": #if user input is 2, player can gather things
         if interact(map[player_y][player_x]):
             map[player_y][player_x] = "  "
@@ -470,6 +473,9 @@ while True:
         #at night, there is a chance to be attacked while doing things
         if not combat():
             break
+        else:
+            for i in range(random.randint(1,5)):
+                inventory.append("gold")
 
     elif user_input == "3": #if user input is 3, shows inventory
         print("\nINVENTORY:")
@@ -485,6 +491,9 @@ while True:
         #at night, there is a chance to be attacked while doing things
         if not combat():
             break
+        else:
+            for i in range(random.randint(1,5)):
+                inventory.append("gold")
         
     else:
         print("\ninvalid input")
